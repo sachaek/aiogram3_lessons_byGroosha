@@ -6,7 +6,7 @@ BOT_TOKEN = env.str("BOT_TOKEN")
 
 import asyncio
 import logging
-from aiogram import Bot, Dispatcher, types
+from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters.command import Command
 
 
@@ -15,12 +15,18 @@ bot = Bot(token=BOT_TOKEN, parse_mode='HTML')
 dp = Dispatcher()
 
 
-@dp.message(Command('start'))
-async def cmd_start(message: types.Message):
-    await message.answer("HELLO!")
+async def cmd_test1(message: types.Message):
+    await message.reply('Test 1')
+
+
+async def cmd_test2(message: types.Message):
+    await message.reply('Test 2')
+
 
 
 async def main():
+    dp.message.register(cmd_test2, F.text,  Command('test2'))
+    dp.message.register(cmd_test1, Command('test1'))
     await dp.start_polling(bot)
 
 if __name__ == '__main__':
